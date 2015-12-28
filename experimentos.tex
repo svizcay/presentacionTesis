@@ -1,0 +1,325 @@
+\begin{frame}
+\vfill
+\begin{center}
+\begin{block}{\begin{center}\begin{Huge}Experimentos y resultados\end{Huge}\end{center}}
+\end{block}
+%\vfill
+\end{center}
+%\vfill
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Experimentos}
+
+\begin{block}{Mediciones}
+\begin{itemize}
+  \item Mediciones fueron realizadas con \texttt{clock} para el programa secuencial (tiempo de procesador utilizado en cantidad de \textit{ticks} de reloj) y \texttt{omp\_get\_wtime} para los programas paralelos (tiempo de reloj de muralla).
+\end{itemize}
+\end{block}
+
+\begin{block}{Conjunto de pruebas}
+\begin{itemize}
+  \item Programa original secuencial (\textit{double}) con y sin -O3.
+  \item Programa paralelizado con OpenMP (\textit{float} y \textit{double}).
+  \item Programas paralelizados en GPU utilizando CUDA y OpenCL.
+  \item Programa paralelizado con OpenMP + SIMD (\textit{float} y \textit{double}).
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Experimentos}
+\begin{block}{Entorno de Pruebas: CPU}
+
+\begin{table}[]
+\centering
+%\caption{My caption}
+\label{my-label}
+\begin{tabular}{lrr}
+\toprule
+           & \multicolumn{1}{c}{\bf Nanoserver}          & \multicolumn{1}{c}{\bf Titan}               \\
+\midrule
+Modelo     & \multicolumn{1}{l}{AMD Opteron 6282 SE} & \multicolumn{1}{l}{Intel Core i7-4960X} \\
+Nr. cores  & 64 (4 x 16)                             & 6                                       \\
+Frecuencia & 2.6 GHz                                 & 3.6 GHz      \\  
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Experimentos}
+\begin{block}{Entorno de Pruebas: Tarjeta gráfica}
+
+\begin{table}[]
+\centering
+%\caption{My caption}
+\label{my-label}
+\begin{tabular}{lrr}
+\toprule
+               & \multicolumn{1}{c}{\textbf{Nanoserver}} & \multicolumn{1}{c}{\textbf{Titan}}     \\
+\midrule
+Modelo         & \multicolumn{1}{l}{Nvidia Tesla c2075}  & \multicolumn{1}{l}{Nvidia Titan Black} \\
+RAM            & 6 GB                                    & 6 GB                                   \\
+Bus de memoria & 384 bit                                 & 384 bit                                \\
+Bandwidth      & 144 GB/s                                & 336 GB/s                               \\
+Conexión       & PCIe 2.0x12                             & PCIe 3.0x16                            \\
+Frecuencia GPU & 1.150 MHz                               & 889 MHz                                \\
+Nr. shaders    & 448 (14 SM x 32 SP)                     & 2.880 (15 SM x 192 SP)                \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de ejecución: Nanoserver OpenMP}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_openmp_double}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_openmp_float}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Speedup: Nanoserver OpenMP}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_openmp_double_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_openmp_float_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de ejecución: Titan OpenMP}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_openmp_double}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_openmp_float}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Speedup: Titan OpenMP}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_openmp_double_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_openmp_float_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de ejecución y speedup: CUDA y OpenCL}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_gpu}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_gpu_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Comentarios: CUDA y OpenCL}
+\begin{itemize}
+	  \item Configuración utiliza el máximo número de hebras por bloques.
+	  \item A partir de 3.000 espines, el tiempo de ejecución en GPU es menor al O3.
+	  \item Speedup creciente dada la pendiente de la curva de speedup.
+	  \item A mayor tamaño de problema, mayor es la transferencia CPU-GPU y mayor es la cantidad de veces a realizar tal comunicación.
+	  \item Tiempos de transferencia corresponden en promedio a un 77\% (CUDA) y un 74\% del total de tiempo de simulación.
+	  \item Computación realizada en el kernel no justifica el alto costo de comunicación.
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de transferencia: CUDA y OpenCL}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_gpu_transfer}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de ejecución: Nanoserver OpenMP + SIMD}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_simd_double}}
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_simd_float}}
+  \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Speedup: Nanoserver OpenMP + SIMD}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_simd_double_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/nanoserver_simd_float_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Tiempos de ejecución: Titan OpenMP + SIMD}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_simd_double}}
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_simd_float}}
+  \end{column}
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Speedup: Titan OpenMP + SIMD}
+
+\begin{columns}
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_simd_double_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+
+  \end{column}
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=4.5cm]{pics/graficosEs/titan_simd_float_speedup}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  \end{columns}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Comentarios: Mejores speedups obtenidos}
+
+\begin{table}[htbp]\small
+\centering
+%\caption{Resumen speedups alcanzados}
+\label{tabla:resumenspeedups}
+\begin{tabular}{lll}
+\toprule
+\multicolumn{1}{c}{{\bf Programa}} & \multicolumn{1}{c}{{\bf Nanoserver}} & \multicolumn{1}{c}{{\bf Titan}} \\
+\midrule
+OpenMP double & 8.78 (4) & 9.01 (6) \\
+OpenMP float & 13.67 (8) & 9.14 (6) \\
+CUDA & sin pruebas & 4.98 (19 bloques x 1024 hebras) \\
+OpenCL & sin pruebas & 3.13 (16 bloques x 1024 hebras) \\
+OpenMP + SIMD double & 10.47 (4) & 15.21 (6) \\
+OpenMP + SIMD float & 19.5 (4) & 30.65 (6) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Comentarios adicionales}
+
+\begin{itemize}
+  \item Speedups obtenidos en el Titan son por lo general mejores que los obtenidos en el Nanoserver.
+  \item Pendiente de las curvas de speedups son mayores en el Nanoserver, por lo que se podría seguir explotando la mayor cantidad de cores que posee el Nanoserver al seguir incrementando la cantidad de espines.
+  \item Speedups obtenidos en GPU son considerablemente más bajos que los obtenidos con los otros métodos de paralelización.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Experimentos}
+\begin{block}{Comentarios adicionales}
+
+\begin{itemize}
+  \item Paralelización en GPU también presenta el problema de contar con un menor tamaño de memoria.
+  \item Computación en GPU requiere obviamente hardware adicional.
+  \item tecnología SIMD resulta prometedora. Próxima generación de procesadores contarán con AVX512.
+  \item De las pruebas realizadas, nunca se obtuvo un speedup lineal perfecto (siempre hay un costo por paralelización).
+\end{itemize}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Experimentos}
+\begin{block}{Validación}
+
+\begin{itemize}
+  \item Uso del comando diff para buscar diferencias entre archivos.
+  \item Programas que utilizan \texttt{doubles} producen exactamente los mismos resultados.
+  \item Programas que utilizan \texttt{floats} producen resultados que difieren tan solo a partir de la quinta o sexta posición decimal.
+  \item Valores originales corresponden a valores obtenidos a través de simulaciones.
+\end{itemize}
+\end{block}
+\end{frame}

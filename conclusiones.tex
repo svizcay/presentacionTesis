@@ -1,0 +1,28 @@
+\begin{frame}
+\vfill
+\begin{center}
+\begin{block}{\begin{center}\begin{Huge}Conclusiones\end{Huge}\end{center}}
+\end{block}
+%\vfill
+\end{center}
+%\vfill
+\end{frame}
+
+\begin{frame}{Conclusiones}
+\begin{itemize}
+  \item Se investigó sobre técnicas de paralelismo en GPU y CPU y su aplicabilidad en el modelo de Heisenberg.
+  \item Primera paralelización utilizando \textit{straightforward parallelism} con OpenMP no cumplió las expectativas.
+  \item Se ofreció un segundo método de paralelización en OpenMP, el cual busca mantener las hebras activas. Este método presentó mejores resultados pero la estrategia utilizada no pudo ser portada a GPU.
+  \item Dentro de las pruebas realizadas, se alcanzó un speedup de 30 utilizando OpenMP + SIMD, al simular 21.000 espines utilizando 6 hebras.
+  \item Resultados obtenidos en GPU fueron considerablemente menores de lo esperado. Esto se debe tanto a la inclusión del término dipolar, la mayor cantidad de memoria necesitada en el modelo de Heisenberg frente a otros modelos, y a la arquitecturas de las GPUs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusiones}
+\begin{itemize}
+  \item En GPU, resultados obtenidos utilizando CUDA son levemente mejores que los obtenidos con OpenCL.
+  \item En cuanto a analisis de escalabilidad, se determinó que la solución OpenMP + SIMD es escalable y se espera alcanzar cifras mayores de speedups al simular instancias con mayor número de espines.
+  \item Se determinó la ventaja de utilizar números flotantes de precisión simple y se verificó que los resultados obtenidos en estas simulaciones están en conformidad con los que se obtienen al utilizar \textit{doubles}.
+  \item Se plantea como trabajo a futuro implementar el método de Monte Carlo en alguna FPGA, lo cual sería lo más cercano a construir hardware específico para tal simulación.
+\end{itemize}
+\end{frame}

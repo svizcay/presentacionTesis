@@ -1,0 +1,237 @@
+\begin{frame}
+\vfill
+\begin{center}
+\begin{block}{\begin{center}\begin{Huge}Trabajo realizado\end{Huge}\end{center}}
+\end{block}
+%\vfill
+\end{center}
+%\vfill
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Trabajo realizado}
+\centerline{
+      \pgfimage[height=7.0cm]{pics/mc_algoritmo}}
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Análisis de código y detección de zonas paralelizables}
+\begin{itemize}
+  \item Speedup alcanzable queda limitado por la ley de Amdahl.
+  \item Primer bucle, encargado de construir una curva de histéresis por cada semilla, es trivialmente paralelizable.
+  \item Segundo y tercer bucle (valor de campo y número de MCS) son secuenciales.
+  \item Cuarto bucle, el encargado de tomar muestras al azar, es secuencial si de desea cumplir la condición de \textit{balance detallado}.
+  \item Paralelización es solo aplicable al cálculo de la energía realizado en el bucle más interno.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Análisis de código y detección de zonas paralelizables}
+\begin{itemize}
+  \item El cálculo de la interacción dipolar corresponde a otro bucle anidado, ya que debe calcularse la interacción entre cada uno de los espines.
+  \item De las mediciones realizadas, el simulador tarda un 99\% del tiempo total en calcular la interacción dipolar.
+  \item Tal cálculo no es en sí computacionalmente costoso, pero éste debe ser realizado un gran número de veces.
+\end{itemize}
+\centerline{
+      \pgfimage[height=3.0cm]{pics/patron}}
+\end{block}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización a través de OpenMP}
+\begin{itemize}
+  \item Primer intento: \textit{straightforward parallelism}.
+  \item Basado en filosofía de OpenMP (paralelismo incremental).
+  \item Creación y destrucción de hebras resulta ser ineficiente.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Trabajo realizado}
+\begin{block}{Primer intento con OpenMP}
+
+\begin{lstlisting}[language=C++, basicstyle=\tiny]
+for (int j = 0; j < nr_deltaH; j++) {
+  for (int k = 0; k < MCS; k++) {
+    for (int l = 0; l < nr_spins; l++) {
+      // seleccionar spin al azar
+
+      // calcular dipolar
+      #pragma omp parallel for
+      for (int i = 0; i < nr_spins; i++) {
+        // codigo dipolar
+      }
+
+      // suma valores parciales dipolar
+
+      // calcular resto de las interacciones
+      // y decidir si mantener o actualizar la configuracion
+    }
+  }
+}
+\end{lstlisting}
+
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización a través de OpenMP}
+\begin{itemize}
+  \item Segundo intento: mantener hebras activas.
+  \item Por defecto, todo el código es ejecutado por todas las hebras.
+  \item Se debe definir ahora zonas de códigos que serán ejecutadas por tan solo una hebra y agregar mecanismos de sincronización.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Trabajo realizado}
+\begin{block}{Segundo intento con OpenMP}
+
+\begin{lstlisting}[language=C++, basicstyle=\tiny]
+#pragma omp parallel
+{
+for (int j = 0; j < nr_deltaH; j++) {
+  for (int k = 0; k < MCS; k++) {
+    for (int l = 0; l < nr_spins; l++) {
+      #pragma omp single
+      // seleccionar spin al azar
+
+      // calcular dipolar
+      calculateDipolar();
+
+      #pragma omp critical
+      // suma valores parciales dipolar
+
+      #pragma omp barrier
+
+      #pragma omp single
+      // calcular resto de las interacciones
+      // y decidir si mantener o actualizar la configuracion
+    }
+  }
+}
+}   // end pragma omp parallel
+\end{lstlisting}
+
+\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización en GPU a través de CUDA y OpenCL}
+\begin{itemize}
+  \item No se logra implementar la misma estrategia de mantener las hebras activas ya que el resultado debe ser comunicado de vuelta al host y no existen mecanismos de sincronización entre hebras que perteneces a bloques distintos.
+  \item Se debe transferir los valores de magnetización por cada ejecución del kernel.
+  \item Para compensar el costo de comunicación, la cantidad de espines debe ser lo suficientemente grande como para que el cálculo de la interacción dipolar valga la pena ser calculado utilizando miles de hebras.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización en GPU a través de CUDA y OpenCL}
+\begin{itemize}
+  \item Tamaño del sistema está limitado por el tamaño de la memoria global.
+  \item Cantidad de accesos a memoria deben ser idealmente menores a la cantidad de operaciones realizadas en el kernel.
+\end{itemize}
+\begin{equation}
+\label{formula:kerneldipolar}
+\begin{aligned}
+  d_f &= 3(\hat{n_{ij}} \cdot \vec{m_j}) \\
+  {B_d} &= \frac{d_f\hat{n_{ij}} - \vec{m_j}}{r_{ij}^3} \\
+  %
+\end{aligned}
+\end{equation}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Trabajo realizado}
+\begin{block}{Función kernel}
+
+\begin{lstlisting}[language=C++, basicstyle=\tiny]
+kernel_dipolar(float *magnetization, float *nx, float *ny, float *nz,
+        float *cube, int site, int nrAtoms, float *output) {
+    // index es el id de la hebra
+    if (index >= nrAtoms)                   // 1 comparacion
+        return;
+
+    int inputIndexX = 0 * nrAtoms + index;  // 2 op aritmeticas
+    int inputIndexY = 1 * nrAtoms + index;  // 2 op aritmeticas
+    int inputIndexZ = 2 * nrAtoms + index;  // 2 op aritmeticas
+
+    float mujX = magnetization[inputIndexX];
+    float mujY = magnetization[inputIndexY];
+    float mujZ = magnetization[inputIndexZ];
+
+    int indexJSite = site * nrAtoms + index;    // 2 op aritmeticas
+
+    float distanceX = nx[indexJSite];
+    float distanceY = ny[indexJSite];
+    float distanceZ = nz[indexJSite];
+
+    ...
+\end{lstlisting}
+
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Trabajo realizado}
+\begin{block}{Función kernel (continuación)}
+
+\begin{lstlisting}[language=C++, basicstyle=\tiny]
+	...
+    float cubeDistance = cube[indexJSite];
+
+    // 6 operaciones aritmeticas
+    float df = 3 * (mujX*distanceX + mujY*distanceY + mujZ*distanceZ);
+
+    output[inputIndexX] = (df * distanceX - mujX) / cubeDistance; // 3 op aritimeticas
+    output[inputIndexY] = (df * distanceY - mujY) / cubeDistance; // 3 op aritimeticas
+    output[inputIndexZ] = (df * distanceZ - mujZ) / cubeDistance; // 3 op aritimeticas
+}
+\end{lstlisting}
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización en GPU a través de CUDA y OpenCL}
+\begin{itemize}
+  \item Kernel anterior tiene un ratio CGMA (\textit{Compute to Global Memory Access}) de dos, es decir, por cada dos accesos a memoria se realizan dos operaciones.
+  \item Dada la natureleza del problema, tampoco resulta factible utilizar otros tipos de memoria como la memoria compartida, constante, etc.
+  \item Información se encuentra almacenada de forma contigua con el fin de que hebras contiguas accedan a posiciones contiguas (se evitan colisiones).
+  \item Tampoco existen divergencias en el kernel más allá del \textit{if} inicial que verifica si se trata de un id válido.
+\end{itemize}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización a través de OpenMP e instrucciones SIMD}
+\begin{itemize}
+  \item Además de dividir la carga de trabajos entre hebras, se realiza procesamiento vectorial por cada una de ellas.
+  \item Se utiliza la extensión AVX que permite operar en registros de 256 bits.
+  \item Además de ofrecer vectorización, se evita además accesos a memoria al procesar la información directamente en los registros del procesador.
+  \item Se implementan dos programas, uno que utiliza precisión simple y otro que utiliza precisión doble.
+  \item Información debe ser empaquetada de forma correcta para realizar transferencias óptimas a los registros SIMD y poder operar así de forma vectorial.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Cálculo del valor \textit{df}}
+\centerline{
+      \pgfimage[height=7.0cm]{pics/df}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Trabajo realizado}
+\begin{block}{Paralelización a través de OpenMP e instrucciones SIMD}
+\begin{itemize}
+  \item Operaciones SIMD para el programa de precisión simple difieren de las del programa de precisión doble.
+  \item Se agrega un \textit{overhead} al realizar las operaciones finales del cálculo de la interacción dipolar, al retornar los valores de este vector de forma contigua.
+\end{itemize}
+\end{block}
+\end{frame}

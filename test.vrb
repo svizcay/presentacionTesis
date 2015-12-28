@@ -1,0 +1,17 @@
+\frametitle{Trabajo realizado}
+\begin{block}{Función kernel (continuación)}
+
+\begin{lstlisting}[language=C++, basicstyle=\tiny]
+...
+    float cubeDistance = cube[indexJSite];
+
+    // 6 operaciones aritmeticas
+    float df = 3 * (mujX*distanceX + mujY*distanceY + mujZ*distanceZ);
+
+    output[inputIndexX] = (df * distanceX - mujX) / cubeDistance; // 3 op aritimeticas
+    output[inputIndexY] = (df * distanceY - mujY) / cubeDistance; // 3 op aritimeticas
+    output[inputIndexZ] = (df * distanceZ - mujZ) / cubeDistance; // 3 op aritimeticas
+}
+\end{lstlisting}
+
+\end{block}
