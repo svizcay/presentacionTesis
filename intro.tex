@@ -1,0 +1,78 @@
+\begin{frame}
+\vfill
+\begin{center}
+\begin{block}{\begin{center}\begin{Huge}Introducción\end{Huge}\end{center}}
+\end{block}
+%\vfill
+\end{center}
+%\vfill
+\end{frame}
+
+\begin{frame}{Introducción}
+\begin{block}{Antecedentes y motivación}
+\begin{itemize}
+  \item Avances en la ciencia han permitido la sintetización de nanopartículas (otorgándole diversas formas y tamaños).
+  \item Propiedades físicas de nanoestructuras difieren de las macroscópias, las cuales son bien conocidas.
+  \item Estructuras ferromagnéticas a escala nanométrica presentan propiedades tales como: magneto resistencia gigante, efecto Hall gigante, entre otras.
+  \item Interés en el estudio de estas propiedades emergentes.
+  \item Propiedades se encuentran determinadas por la geometría, tamaño y material.
+  \item Búsqueda de nuevas geometrías con aplicaciones interesantes o con fines teóricos.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Introducción}
+\begin{block}{Geometrías convencionales}
+\centerline{\pgfimage[height=4.5cm]{pics/geometrias}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Introducción}
+\begin{block}{Antecedentes y motivación}
+
+\begin{columns}
+
+  \begin{column}{.65\textwidth}
+\begin{itemize}
+  \item Investigadores del Depto de Física de la Universidad de Santiago en conjunto con CEDENNA realizan estudio sistemático de estas estructuras a través de simulaciones de Monte Carlo.
+  \item Aplicaciones van desde almacenamiento de información de alta densidad hasta portadores para entrega de drogras.
+\end{itemize}
+  \end{column}
+  
+  \begin{column}{.35\textwidth}
+\centerline{\pgfimage[height=4.5cm]{pics/dds}}
+  \end{column}
+  
+\end{columns}
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Introducción}
+\begin{block}{Problemas}
+\begin{itemize}
+  \item Método de Monte Carlo es el método clásico en la Física Estadística para evaluar observables.
+  \item Poder de cómputo actual no hace factible simular geometrías con más de $10^{9}$ momentos magnéticos.
+  \item Se utiliza el método \textit{Fast Monte Carlo} para simular sistemas escalados.
+  \item Tiempo de ejecución todavía es demasiado (orden de dos o tres semanas para 3.000 momentos magnéticos).
+  \item Si se acelera el proceso, se podría estudiar sistemas más grandes o simplemente reducir los tiempos de simulación para proceder a analizar si la geometría es útil o no.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Introducción}
+\begin{block}{Solución y objetivo}
+\begin{itemize}
+  \item Se propone el diseño e implementación de un programa paralelo equivalente al secuencial actual que reduzca los tiempos de ejecución.
+\end{itemize}
+\end{block}
+\begin{block}{Objetivos específicos}
+\begin{itemize}
+  \item Determinar método de paralelismo (GPU/CPU).
+  \item Implementar software.
+  \item Validar resultados (que sean correctos).
+  \item Proponer experimentos para evaluar rendimiento computacional.
+  \item Realizar las pruebas de ejecución.
+\end{itemize}
+\end{block}
+\end{frame}

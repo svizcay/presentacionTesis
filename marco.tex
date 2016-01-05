@@ -1,0 +1,135 @@
+\begin{frame}
+\vfill
+\begin{center}
+\begin{block}{\begin{center}\begin{Huge}Marco teórico\end{Huge}\end{center}}
+\end{block}
+%\vfill
+\end{center}
+%\vfill
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Modelos de espines}
+\begin{itemize}
+  \item Momento magnético: vector compuesto del momento angular del átomo y de su momento angular intrínseco o espín.
+  \item Materiales pueden ser clasificados acorde a como sus espines reaccionan a un campo magnético externo.
+  \item Materiales ferromagnéticos quedan permanentemente magnetizados al ser expuestos.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Modelos de espines - Estados fundamentales}
+\begin{itemize}
+  \item Modificación de las estructuras ferromagnéticas, como respuesta a un campo externo, genera diferentes estados.
+\end{itemize}
+\centerline{\pgfimage[height=4.5cm]{pics/configuraciones}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Modelos de espines - Histéresis (modo de reversión)}
+\begin{itemize}
+  \item Forma en que el sistema recorre diferentes valores de campo desde la saturación en una dirección opuesta.
+  \item Puede realizarse a través de nucleación de vórtices o a través de rotación coherente.
+\end{itemize}
+
+\begin{columns}
+
+  \begin{column}{.50\textwidth}
+\begin{itemize}
+  \item Coercitividad: intensidad necesaria para eliminar magnetización.
+  \item Magnetización de remanencia.
+\end{itemize}
+  \end{column}
+  
+  \begin{column}{.50\textwidth}
+	\centerline{\pgfimage[height=4.0cm]{pics/histeresis}}
+  \end{column}
+  
+\end{columns}
+
+
+
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Modelos de espines}
+\begin{itemize}
+  \item Física estadística: estimación del comportamiento macro a partir de las leyes aplicadas a sus componentes.
+  \item Uso de modelos de grilla de espines (\textit{lattice spin models}).
+  \item Utilizados para el estudio de fenómenos críticos (propiedades que aparecen durante una transición de fase).
+  \item Modelos son descritos a través de un Hamiltoniano (función que determina la cantidad de energía del sistema).
+  \item Modelo de Ising es el más utilizado.
+  \item En este trabajo se utiliza el modelo de Heisenberg.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Modelos de espines - Energías}
+\begin{itemize}
+  \item Energía Dipolar.
+  \item Energía de Intercambio (vecinos).
+  \item Energía de Zeeman (campo externo y espín).
+  \item Energía de anisotropía (dirección preferencial).
+\end{itemize}
+
+\begin{equation}
+\label{formula:hamiltoniano}
+    H = \frac{1}{2} \sum\limits_{i\neq j} [E_{ij}^{dip} - E_{ij}^{ex}] + \sum\limits_{i} E_i^k + \sum\limits_{i} E_i^z
+\end{equation}
+
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Simulaciones de Monte Carlo}
+\begin{itemize}
+  \item Simulaciones de los modelos anteriores son realizadas a través del método de Monte Carlo.
+  \item Técnica matemática computarizada que hace uso de números aleatorios para simular procesos estocásticos.
+  \item Trayectoria estocástica en el espacio de fase.
+
+\end{itemize}
+\begin{equation}
+\label{formula:estimacionmontecarlo}
+    X_{MC} = \frac{1}{M}\sum\limits_{i=1}^{M} f(x_i)
+\end{equation}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Markov Chain Monte Carlo}
+\begin{itemize}
+  \item Uso de cadenas de Markov para samplear estados con mayor probabilidad.
+  \item En base a si se cumplen ciertas propiedades, la cadena converge a una distribución estacionaria.
+
+\end{itemize}
+	\centerline{\pgfimage[height=4.0cm]{pics/markov}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Algoritmo de Metrópolis}
+\begin{itemize}
+  \item Es un caso particular de \textit{Markov Chain} Monte Carlo en donde se descompone la probabilidad de transición en una probabilidad de selección un estado y luego aceptar tal transación.
+  \item Lo anterior permite realizar una simplificación en donde se elimina la constante de normalización (la cual no puede ser calculada debido a la infinidad de estados posibles).
+
+\end{itemize}
+	\centerline{\pgfimage[height=3.5cm]{pics/metropolis}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Marco teórico}
+\begin{block}{Técnicas para acelerar Monte Carlo}
+\begin{itemize}
+  \item Métodos de clustering: Swendsen-Wang, Wolff (utilizados en sistemas con temperatura cercana a la temperatura crítica).
+  \item Parallel tempering (utilizado en sistemas en criticalidad y en modelo \textit{Spin Glass}).
+  \item Descomposición en tablero de ajedrez (no considera dipolar ni respeta el balance detallado).
+  \item Se opta por mantener el método de actualización secuencial (\textit{single spin flip}).
+  \item Se optimiza el cálculo del Hamiltoniano, calculando el delta de energía solamente en base al espín seleccionado de forma aleatoria.
+\end{itemize}
+\end{block}
+\end{frame}

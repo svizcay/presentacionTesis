@@ -9,9 +9,128 @@
 \end{frame}
 
 \begin{frame}{Arquitecturas y modelos de computación paralela}
-\begin{block}{Programación en GPU}
+\begin{block}{Taxonomía de Flynn}
 \begin{itemize}
-  \item asdf
+  \item Diferentes combinaciones de \textit{Single-Multiple} \textit{Instruction-Data}.
+  \item Dos diferentes enfoques: paralelismo a nivel de tareas y a nivel de datos.
+  \item En este trabajo se utiliza principalmente SIMD.
 \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{Programación en GPU - Intro}
+\begin{itemize}
+  \item Historia de la GPU (ley de Moore). Aumento del número de unidades de procesamiento.
+  \item Alternativa económica.
+  \item Computación en CPU (orientados a ocultar la latencia) vs GPU (orientados al \textit{throughput}).
+\end{itemize}
+\centerline{\pgfimage[height=3.5cm]{pics/cpu_vs_gpu}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{Programación en GPU - Modelo del dispositivo}
+\centerline{\pgfimage[height=5.0cm]{pics/modelo_dispositivo}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{Programación en GPU - Modelo de ejecución}
+\begin{columns}
+
+  \begin{column}{.50\textwidth}
+	\centerline{
+      \pgfimage[height=2.5cm]{pics/kernel_call}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  
+  \begin{column}{.50\textwidth}
+    \centerline{
+      \pgfimage[height=2.5cm]{pics/grid}}
+      %\pgfimage[height=3.5cm]{pics/house}}
+  \end{column}
+  
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{Programación en GPU - Modelo de memoria}
+\centerline{\pgfimage[height=5.0cm]{pics/modelo_memoria}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{Programación en GPU - Consejos generales}
+\begin{itemize}
+  \item Kernels grandes, pocos accesos y gran cantidad de operaciones (ocultar latencia).
+  \item Evitar colisiones en los accessos (uso de IDs).
+  \item Bloques deben ser de tamaño múltiplo de \textit{warp-wavefront}.
+  \item Mantener a la GPU ocupada (\textit{oversubscribe}).
+  \item Evaluar uso de memoria compartida y memoria constante.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{El estándar OpenMP}
+
+\begin{columns}
+
+  \begin{column}{.50\textwidth}
+\begin{itemize}
+  \item Paralelismo en modelos de memoria compartida.
+  \item Paralelismo incremental.
+  \item Modelo de ejecución sigue patrón \textit{fork-join}.
+\end{itemize}
+  \end{column}
+  
+  \begin{column}{.50\textwidth}
+	\centerline{\pgfimage[height=5.5cm]{pics/openmp_modelo_ejecucion}}
+  \end{column}
+  
+\end{columns}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{El estándar OpenMP - Directivas y cláusulas}
+\begin{itemize}
+  \item Región paralela: \texttt{pragma omp parallel}.
+  \item Paralelización bucle \textit{for}: \texttt{pragma omp parallel for}.
+  \item Barrera de sincronización: \texttt{pragma omp barrier}.
+  \item Ejecución única: \texttt{pragma omp single}.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{SIMD y extensiones SSE}
+\begin{itemize}
+  \item Operaciones vectoriales haciendo uso de registros con mayor capacidad.
+\end{itemize}
+  \centerline{\pgfimage[height=4.5cm]{pics/simd}}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{SIMD y extensiones SSE - Evolución de la tecnología}
+\begin{itemize}
+  \item MMX.
+  \item SSE (\textit{Streaming SIMD Extensions}).
+  \item SSE2.
+  \item SSE3.
+  \item SSSE3.
+  \item SSE4
+  \item AVX.
+  \item AVX512.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Arquitecturas y modelos de computación paralela}
+\begin{block}{SIMD y extensiones SSE - Empaquetamiento}
+  \centerline{\pgfimage[height=4.5cm]{pics/avx_registers_type}}
 \end{block}
 \end{frame}
