@@ -9,16 +9,6 @@
 \end{frame}
 
 \begin{frame}{Arquitecturas y modelos de computación paralela}
-\begin{block}{Taxonomía de Flynn}
-\begin{itemize}
-  \item Diferentes combinaciones de \textit{Single-Multiple} \textit{Instruction-Data}.
-  \item Dos diferentes enfoques: paralelismo a nivel de tareas y a nivel de datos.
-  \item En este trabajo se utiliza principalmente SIMD.
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}{Arquitecturas y modelos de computación paralela}
 \begin{block}{Programación en GPU - Intro}
 \begin{itemize}
   \item Historia de la GPU (ley de Moore). Aumento del número de unidades de procesamiento.
@@ -69,38 +59,6 @@
   \item Bloques deben ser de tamaño múltiplo de \textit{warp-wavefront}.
   \item Mantener a la GPU ocupada (\textit{oversubscribe}).
   \item Evaluar uso de memoria compartida y memoria constante.
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}{Arquitecturas y modelos de computación paralela}
-\begin{block}{El estándar OpenMP}
-
-\begin{columns}
-
-  \begin{column}{.50\textwidth}
-\begin{itemize}
-  \item Paralelismo en modelos de memoria compartida.
-  \item Paralelismo incremental.
-  \item Modelo de ejecución sigue patrón \textit{fork-join}.
-\end{itemize}
-  \end{column}
-  
-  \begin{column}{.50\textwidth}
-	\centerline{\pgfimage[height=5.5cm]{pics/openmp_modelo_ejecucion}}
-  \end{column}
-  
-\end{columns}
-\end{block}
-\end{frame}
-
-\begin{frame}{Arquitecturas y modelos de computación paralela}
-\begin{block}{El estándar OpenMP - Directivas y cláusulas}
-\begin{itemize}
-  \item Región paralela: \texttt{pragma omp parallel}.
-  \item Paralelización bucle \textit{for}: \texttt{pragma omp parallel for}.
-  \item Barrera de sincronización: \texttt{pragma omp barrier}.
-  \item Ejecución única: \texttt{pragma omp single}.
 \end{itemize}
 \end{block}
 \end{frame}

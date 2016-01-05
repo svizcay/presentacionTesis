@@ -17,19 +17,6 @@
 \begin{frame}{Trabajo realizado}
 \begin{block}{Análisis de código y detección de zonas paralelizables}
 \begin{itemize}
-  \item Speedup alcanzable queda limitado por la ley de Amdahl.
-  \item Primer bucle, encargado de construir una curva de histéresis por cada semilla, es trivialmente paralelizable.
-  \item Segundo y tercer bucle (valor de campo y número de MCS) son secuenciales.
-  \item Cuarto bucle, el encargado de tomar muestras al azar, es secuencial si de desea cumplir la condición de \textit{balance detallado}.
-  \item Paralelización es solo aplicable al cálculo de la energía realizado en el bucle más interno.
-\end{itemize}
-\end{block}
-
-\end{frame}
-
-\begin{frame}{Trabajo realizado}
-\begin{block}{Análisis de código y detección de zonas paralelizables}
-\begin{itemize}
   \item El cálculo de la interacción dipolar corresponde a otro bucle anidado, ya que debe calcularse la interacción entre cada uno de los espines.
   \item De las mediciones realizadas, el simulador tarda un 99\% del tiempo total en calcular la interacción dipolar.
   \item Tal cálculo no es en sí computacionalmente costoso, pero éste debe ser realizado un gran número de veces.
@@ -202,7 +189,6 @@ kernel_dipolar(float *magnetization, float *nx, float *ny, float *nz,
   \item Kernel anterior tiene un ratio CGMA (\textit{Compute to Global Memory Access}) de dos, es decir, por cada dos accesos a memoria se realizan dos operaciones.
   \item Dada la natureleza del problema, tampoco resulta factible utilizar otros tipos de memoria como la memoria compartida, constante, etc.
   \item Información se encuentra almacenada de forma contigua con el fin de que hebras contiguas accedan a posiciones contiguas (se evitan colisiones).
-  \item Tampoco existen divergencias en el kernel más allá del \textit{if} inicial que verifica si se trata de un id válido.
 \end{itemize}
 \end{block}
 \end{frame}
@@ -212,9 +198,7 @@ kernel_dipolar(float *magnetization, float *nx, float *ny, float *nz,
 \begin{block}{Paralelización a través de OpenMP e instrucciones SIMD}
 \begin{itemize}
   \item Además de dividir la carga de trabajos entre hebras, se realiza procesamiento vectorial por cada una de ellas.
-  \item Se utiliza la extensión AVX que permite operar en registros de 256 bits.
   \item Además de ofrecer vectorización, se evita además accesos a memoria al procesar la información directamente en los registros del procesador.
-  \item Se implementan dos programas, uno que utiliza precisión simple y otro que utiliza precisión doble.
   \item Información debe ser empaquetada de forma correcta para realizar transferencias óptimas a los registros SIMD y poder operar así de forma vectorial.
 \end{itemize}
 \end{block}
